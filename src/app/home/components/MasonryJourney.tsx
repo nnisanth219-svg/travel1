@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AppImage from '@/components/ui/AppImage';
 
 interface DayCluster {
@@ -167,8 +167,15 @@ const clusters: DayCluster[] = [
 
 const MasonryJourney: React.FC = () => {
   const tileRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -187,7 +194,7 @@ const MasonryJourney: React.FC = () => {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [mounted]);
 
   let globalTileIndex = 0;
 

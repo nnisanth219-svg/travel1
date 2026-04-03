@@ -9,12 +9,19 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onJoin }) => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     const handleScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [mounted]);
 
   const navLinks = [
     { label: 'The Experience', href: '#journey' },
@@ -25,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ onJoin }) => {
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-        scrolled
+        scrolled && mounted
           ? 'bg-slate-deep/90 backdrop-blur-xl border-b border-white/10 py-4' :'py-7'
       }`}
     >

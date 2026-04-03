@@ -7,15 +7,22 @@ interface StickyCTABarProps {
 
 const StickyCTABar: React.FC<StickyCTABarProps> = ({ onJoin }) => {
   const [visible, setVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     const handleScroll = () => {
       // Show after scrolling past hero (approx 90vh)
       setVisible(window.scrollY > window.innerHeight * 0.85);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [mounted]);
 
   return (
     <div

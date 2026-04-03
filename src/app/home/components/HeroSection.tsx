@@ -12,9 +12,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onJoin }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [typingDone, setTypingDone] = useState(false);
   const [heroVisible, setHeroVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const indexRef = useRef(0);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     // Start hero reveal
     const revealTimer = setTimeout(() => setHeroVisible(true), 300);
 
@@ -36,7 +43,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onJoin }) => {
       clearTimeout(revealTimer);
       clearTimeout(startTimer);
     };
-  }, []);
+  }, [mounted]);
 
   const stats = [
   { label: 'Workshop Duration', value: '7 Days', sub: 'Barcelona → Provence → Amalfi' },
@@ -109,8 +116,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onJoin }) => {
             className="font-display text-5xl md:text-7xl lg:text-8xl font-light leading-[0.9] tracking-tight text-white"
             style={{ fontFamily: 'Playfair Display, Georgia, serif', minHeight: '4em' }}>
             
-            {displayedText}
-            {!typingDone && <span className="typewriter-cursor" />}
+            {mounted ? displayedText : HEADLINE}
+            {!typingDone && mounted && <span className="typewriter-cursor" />}
           </h1>
 
           <p
