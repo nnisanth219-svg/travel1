@@ -95,7 +95,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onJoin }) => {
       {/* Main content */}
       <div
         className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-20 md:pb-28 grid grid-cols-1 lg:grid-cols-12 gap-10 items-end"
-        style={{ opacity: heroVisible ? 1 : 0, transition: 'opacity 1.2s ease' }}>
+        style={{ 
+          opacity: (mounted && heroVisible) ? 1 : 0, 
+          transition: 'opacity 1.2s ease',
+          ...(mounted && { minHeight: '400px' })
+        }}>
         
         {/* Left — headline */}
         <div className="lg:col-span-7 flex flex-col gap-6">

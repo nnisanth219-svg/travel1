@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface ItineraryModalProps {
   isOpen: boolean;
@@ -9,6 +9,11 @@ interface ItineraryModalProps {
 const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,8 +32,13 @@ const ItineraryModal: React.FC<ItineraryModalProps> = ({ isOpen, onClose }) => {
     <>
       {/* Backdrop */}
       <div
-        className={`modal-backdrop ${isOpen ? 'open' : ''} fixed inset-0 z-50 flex items-center justify-center px-6`}
-        style={{ background: 'rgba(17,26,36,0.8)', backdropFilter: 'blur(6px)' }}
+        className={`modal-backdrop ${mounted && isOpen ? 'open' : ''} fixed inset-0 z-50 flex items-center justify-center px-6`}
+        style={{ 
+          background: 'rgba(17,26,36,0.8)', 
+          backdropFilter: mounted ? 'blur(6px)' : 'none',
+          WebkitBackdropFilter: mounted ? 'blur(6px)' : 'none',
+          display: mounted && isOpen ? 'flex' : 'none'
+        }}
         onClick={handleClose}
       >
         {/* Modal */}

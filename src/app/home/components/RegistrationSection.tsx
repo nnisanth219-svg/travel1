@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface RegistrationSectionProps {
   onJoin: () => void;
@@ -14,8 +14,15 @@ const departures = [
 
 const RegistrationSection: React.FC<RegistrationSectionProps> = ({ onJoin, onDetails }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -26,7 +33,7 @@ const RegistrationSection: React.FC<RegistrationSectionProps> = ({ onJoin, onDet
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
-  }, []);
+  }, [mounted]);
 
   return (
     <section

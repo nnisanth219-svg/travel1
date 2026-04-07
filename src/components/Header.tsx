@@ -33,8 +33,14 @@ const Header: React.FC<HeaderProps> = ({ onJoin }) => {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         scrolled && mounted
-          ? 'bg-slate-deep/90 backdrop-blur-xl border-b border-white/10 py-4' :'py-7'
+          ? 'bg-slate-deep/90 backdrop-blur-xl border-b border-white/10 py-4' : 'py-7'
       }`}
+      style={{
+        ...(mounted && scrolled && { 
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)'
+        })
+      }}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
